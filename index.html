@@ -73,6 +73,17 @@
           />
         </div>
 
+        <div class="field field--sm">
+  <label for="input-retirada" class="field-label">Retirada</label>
+  <input
+    type="number"
+    id="input-retirada"
+    class="field-input"
+    placeholder="Quantidade para retirada"
+    min="1"
+  />
+</div>
+
         <!-- Categoria (extra) -->
         <div class="field field--sm">
           <label for="input-categoria" class="field-label">Categoria</label>
@@ -139,11 +150,16 @@
         <table id="lista-materiais" class="table">
           <thead>
             <tr>
-              <th>Material</th>
-              <th>Categoria</th>
-              <th class="th-center">Quantidade</th>
-              <th class="th-center">Validade</th>
-              <th class="th-center">Status</th>
+            <thead>
+  <tr>
+    <th>Material</th>
+    <th>Categoria</th>
+    <th class="th-center">Quantidade</th>
+    <th class="th-center">Validade</th>
+    <th class="th-center">Status</th>
+    <th class="th-center">Ações</th>
+  </tr>
+</thead>
             </tr>
           </thead>
           <tbody id="tabela-corpo">

@@ -280,3 +280,62 @@ btnAtualizar.addEventListener('click', async () => {
 
 
 document.addEventListener('DOMContentLoaded', carregarMateriais);
+// ============================================================
+// SPRINT 2
+// ============================================================
+
+// Necessário para os testes
+function validarRetirada(estoqueAtual, quantidadeRetirada) {
+  if (quantidadeRetirada <= 0) return false;
+  if (quantidadeRetirada > estoqueAtual) return false;
+  return true;
+}
+
+// btn-baixar
+async function baixarMaterial(id, estoqueAtual) {
+  const inputRetirada = document.getElementById('input-retirada');
+
+  if (!inputRetirada) return;
+
+  const quantidadeRetirada = Number(inputRetirada.value);
+
+  if (!validarRetirada(estoqueAtual, quantidadeRetirada)) {
+    mostrarToast('Quantidade inválida para retirada.', 'warning');
+    return;
+  }
+
+  try {
+    await fetch(`${API_URL}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        quantidade: estoqueAtual - quantidadeRetirada
+      })
+    });
+
+    mostrarToast('Estoque atualizado com sucesso!', 'success');
+    carregarMateriais();
+
+  } catch (erro) {
+    console.error(erro);
+    mostrarToast('Erro ao atualizar estoque.', 'error');
+  }
+}
+
+// btn-excluir
+async function excluirMaterial(id) {
+  try {
+    await fetch(`${API_URL}/${id}`, {
+      method: 'DELETE'
+    });
+
+    mostrarToast('Material excluído com sucesso!', 'success');
+    carregarMateriais();
+
+  } catch (erro) {
+    console.error(erro);
+    mostrarToast('Erro ao excluir material.', 'error');
+  }
+}
