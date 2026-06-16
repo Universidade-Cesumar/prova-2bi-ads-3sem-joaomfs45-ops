@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AlmoxHub — Controle de Estoque</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="10" fill="#0EA5E9"/>
+          <rect x="8" y="10" width="20" height="3" rx="1.5" fill="white"/>
+          <rect x="8" y="16" width="14" height="3" rx="1.5" fill="white" opacity="0.7"/>
+          <rect x="8" y="22" width="17" height="3" rx="1.5" fill="white" opacity="0.5"/>
+          <circle cx="27" cy="27" r="5" fill="#22D3EE"/>
+          <path d="M27 24.5V27.5H29.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <span class="logo-name">AlmoxHub</span>
+          <span class="logo-sub">Enfermagem</span>
+        </div>
+      </div>
+      <div class="header-status" id="header-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Conectado</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+    <!-- CADASTRO -->
+    <section class="card card-form">
+      <div class="card-header">
+        <h2 class="card-title">Cadastrar Material</h2>
+        <p class="card-desc">Registre um novo item no estoque de enfermagem</p>
+      </div>
+
+      <div class="form-grid">
+        <!-- Nome -->
+        <div class="field">
+          <label for="input-nome" class="field-label">Nome do Material <span class="required">*</span></label>
+          <input
+            type="text"
+            id="input-nome"
+            class="field-input"
+            placeholder="Ex: Seringa 10ml, Gaze Estéril…"
+            autocomplete="off"
+          />
+        </div>
+
+        <!-- Quantidade -->
+        <div class="field field--sm">
+          <label for="input-quantidade" class="field-label">Quantidade <span class="required">*</span></label>
+          <input
+            type="number"
+            id="input-quantidade"
+            class="field-input"
+            placeholder="0"
+            min="0"
+          />
+        </div>
+
+        <!-- Categoria (extra) -->
+        <div class="field field--sm">
+          <label for="input-categoria" class="field-label">Categoria</label>
+          <select id="input-categoria" class="field-input field-select">
+            <option value="">Selecionar…</option>
+            <option value="Consumo">Material de Consumo</option>
+            <option value="Permanente">Material Permanente</option>
+          </select>
+        </div>
+
+        <!-- Validade (extra) -->
+        <div class="field field--sm">
+          <label for="input-validade" class="field-label">Validade</label>
+          <input
+            type="date"
+            id="input-validade"
+            class="field-input"
+          />
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button id="btn-cadastrar" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Cadastrar Material
+        </button>
+      </div>
+    </section>
+
+    <!-- LISTAGEM -->
+    <section class="card card-list">
+      <div class="card-header card-header--row">
+        <div>
+          <h2 class="card-title">Estoque Atual</h2>
+          <p class="card-desc">Materiais cadastrados no sistema</p>
+        </div>
+        <div class="list-controls">
+          <div class="search-wrap">
+            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="input-busca" class="field-input search-input" placeholder="Buscar material…" />
+          </div>
+          <button class="btn btn-ghost" id="btn-atualizar" title="Atualizar lista">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading skeleton -->
+      <div id="loading-state" class="loading-state">
+        <div class="skeleton skeleton--row"></div>
+        <div class="skeleton skeleton--row"></div>
+        <div class="skeleton skeleton--row"></div>
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty-state" class="empty-state hidden">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <p>Nenhum material encontrado.</p>
+        <span>Cadastre o primeiro item usando o formulário acima.</span>
+      </div>
+
+      <!-- Tabela -->
+      <div class="table-wrap hidden" id="table-wrap">
+        <table id="lista-materiais" class="table">
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Categoria</th>
+              <th class="th-center">Quantidade</th>
+              <th class="th-center">Validade</th>
+              <th class="th-center">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-corpo">
+            <!-- Preenchido via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="list-footer">
+        <span id="contador" class="contador"></span>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
