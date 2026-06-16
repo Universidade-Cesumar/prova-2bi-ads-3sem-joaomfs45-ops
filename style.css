@@ -18,3 +18,22 @@
     padding: 0.6rem 0.75rem; 
   }
 }
+
+.btn-baixar,
+.btn-excluir {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 2px;
+  color: white;
+  font-size: 12px;
+}
+
+.btn-baixar {
+  background: #2563eb;
+}
+
+.btn-excluir {
+  background: #dc2626;
+}

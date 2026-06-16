@@ -158,13 +158,25 @@ function renderizarTabela(materiais) {
   tableWrap.classList.remove('hidden');
 
   tabelaCorpo.innerHTML = materiais.map(m => `
-    <tr>
-      <td class="td-nome">${escaparHTML(m.nome)}</td>
-      <td class="td-cat">${badgeCategoria(m.categoria)}</td>
-      <td class="td-qty">${m.quantidade}</td>
-      <td class="td-val">${formatarData(m.validade)}</td>
-      <td class="td-status">${badgeStatus(m.quantidade, m.validade)}</td>
-    </tr>
+  <tr>
+  <td class="td-nome">${escaparHTML(m.nome)}</td>
+  <td class="td-cat">${badgeCategoria(m.categoria)}</td>
+  <td class="td-qty">${m.quantidade}</td>
+  <td class="td-val">${formatarData(m.validade)}</td>
+  <td class="td-status">${badgeStatus(m.quantidade, m.validade)}</td>
+
+  <td>
+    <button class="btn-baixar"
+      onclick="baixarMaterial('${m.id}', ${m.quantidade})">
+      Baixar
+    </button>
+
+    <button class="btn-excluir"
+      onclick="excluirMaterial('${m.id}')">
+      Excluir
+    </button>
+  </td>
+</tr>
   `).join('');
 
   atualizarContador(materiais.length);
